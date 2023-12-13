@@ -29,8 +29,9 @@
     "@nestjs/websockets": "^10.2.10",
     "@prisma/client": "^5.7.0",
     "reflect-metadata": "^0.1.13",
-    "rimraf": "^3.0.2",
+    "rimraf": "^5.0.5",
     "rxjs": "^7.2.0",
+    "uuid": "^9.0.1",
     "uuid-v4-validator": "^2.0.0",
     "uuid-validate": "0.0.3"
   },
