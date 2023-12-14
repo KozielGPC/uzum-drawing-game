@@ -1,11 +1,9 @@
 import { useCallback } from 'react';
-import './styles.css';
 import { useRoom } from '../../hooks/useRoom';
 import { useUser } from '../../hooks/useUser';
 import socket from '../../providers/socket';
 import { useHistory } from 'react-router-dom';
-import { Button, Col, Row, Typography } from 'antd';
-
+import { Button, Card, Flex, Typography } from 'antd';
 interface Props {
     nickname: string;
     roomCode: string;
@@ -33,12 +31,10 @@ export default function RoomInfo(props: Props) {
     }, []);
 
     return (
-        <Row>
-            <Col>
-                <Typography.Title>Nick: {props.nickname}</Typography.Title>
-                <Typography.Title>Room: {props.roomCode}</Typography.Title>
-            </Col>
-            <Col>
+        <Card>
+            <Flex vertical>
+                <Typography.Text>Nick: {props.nickname}</Typography.Text>
+                <Typography.Text>Room: {props.roomCode}</Typography.Text>
                 <Button
                     type="primary"
                     // loading={loading}
@@ -46,7 +42,7 @@ export default function RoomInfo(props: Props) {
                 >
                     Logout!
                 </Button>
-            </Col>
-        </Row>
+            </Flex>
+        </Card>
     );
 }
