@@ -17,14 +17,9 @@ import RoomContent from '../../components/RoomContent';
 export default function RoomPage() {
     const { user, room }: { user: User | null; room: Room | null } = useContext(UserContext);
 
-    
-
     const [players, setPlayers] = useState<RoomPlayers | null>(null);
-
    
     const [admNick, setAdmNick] = useState('');
-
-   
 
     const history = useHistory();
 
@@ -66,7 +61,7 @@ export default function RoomPage() {
                         </Layout>
                     </Col>
                     <Col span={14}>
-                        <RoomContent user={user} room={room} />
+                        <RoomContent />
                     </Col>
                     <Col span={4}>
                         <UsersList adm_nick={admNick ?? ''} players={players ?? { users: [], room_adm: user }} />
