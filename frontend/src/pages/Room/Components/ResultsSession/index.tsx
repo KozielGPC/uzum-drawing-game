@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { EndMatch, MatchRounds, Round } from '../../interfaces/iMatch';
-import ShowDraw from '../ShowDraw';
-import socket from '../../providers/socket';
+import { EndMatch, MatchRounds, Round } from '../../../../interfaces/iMatch';
+import ShowDraw from '../../../../components/ShowDraw';
+import { socket } from '../../../../providers/socket';
 import { Typography } from 'antd';
 
 const { Title } = Typography;

@@ -1,5 +1,4 @@
 import CanvasDraw from 'react-canvas-draw';
-import './styles.css';
 
 interface Props {
     draw: string;
@@ -7,8 +6,8 @@ interface Props {
 
 export default function ShowDraw(props: Props) {
     return (
-        <div className="draw-content">
-            <div className="draw">
+        <div>
+            <div>
                 <CanvasDraw
                     canvasWidth={538}
                     canvasHeight={538}

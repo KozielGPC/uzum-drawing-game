@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import CanvasDraw from 'react-canvas-draw';
 import { CompactPicker } from 'react-color';
 import { FiTrash, FiArrowLeft } from 'react-icons/fi';
-import './styles.css';
 
-import socket from '../../providers/socket';
+import { socket } from '../../providers/socket';
 import { EnumRoundType } from '../../interfaces/iRound';
 
 interface Props {
@@ -39,9 +38,9 @@ export default function Draw(props: Props) {
     const [selectedRadius, setSelectedRadius] = useState(5);
     const [canvas, setCanvas] = useState<any>();
     return (
-        <div className="draw-content">
+        <div>
             <h2>Draw: {props.phrase}</h2>
-            <div className="draw">
+            <div>
                 <CanvasDraw
                     loadTimeOffset={8}
                     brushColor={selectedColor}
@@ -54,7 +53,7 @@ export default function Draw(props: Props) {
                     ref={(canvasDraw) => setCanvas(canvasDraw)}
                 />
             </div>
-            <div className="options">
+            <div>
                 <CompactPicker
                     color={selectedColor}
                     onChangeComplete={(color) => {
@@ -67,7 +66,7 @@ export default function Draw(props: Props) {
                     onChange={(e) => setSelectedRadius(parseInt(e.target.value, 10))}
                 />
             </div>
-            <div className="buttons">
+            <div>
                 <button
                     onClick={() => {
                         canvas.undo();

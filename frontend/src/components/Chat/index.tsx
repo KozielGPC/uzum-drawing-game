@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Input, Button, Card } from 'antd';
-import socket from '../../providers/socket';
-
-const { TextArea } = Input;
+import { Button, Card } from 'antd';
+import { socket } from '../../providers/socket';
 
 interface Message {
     text: string;

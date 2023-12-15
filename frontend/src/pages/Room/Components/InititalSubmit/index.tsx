@@ -1,21 +1,21 @@
 import { useContext, useEffect, useState } from 'react';
-import { errorHandler } from '../../tools/errorHandler';
-import socket from '../../providers/socket';
-import { useMatch } from '../../hooks/useMatch';
-import { useRound } from '../../hooks/useRound';
+import { errorHandler } from '../../../../tools/errorHandler';
+import { socket } from '../../../../providers/socket';
+import { useMatch } from '../../../../hooks/useMatch';
+import { useRound } from '../../../../hooks/useRound';
 import { Button, Input, Layout, notification } from 'antd';
 import { v4 as uuidv4 } from 'uuid';
 
-import { EnumRoundType } from '../../interfaces/iRound';
+import { EnumRoundType } from '../../../../interfaces/iRound';
 
-import { Room } from '../../interfaces/iRoom';
-import { User } from '../../interfaces/iUser';
-import { Match } from '../../interfaces/iMatch';
-import { UserContext } from '../../context/UserContext';
+import { Room } from '../../../../interfaces/iRoom';
+import { User } from '../../../../interfaces/iUser';
+import { Match } from '../../../../interfaces/iMatch';
+import { UserContext } from '../../../../context/UserContext';
 
 export const InititalSubmit = () => {
     const { user, room }: { user: User | null; room: Room | null } = useContext(UserContext);
-    
+
     const [phrase, setPhrase] = useState('');
     const { createMatch } = useMatch();
 
@@ -77,7 +77,7 @@ export const InititalSubmit = () => {
                     onChange={(e) => setPhrase(e.target.value)}
                     value={phrase}
                 />
-                <Button onClick={() => handleCreateGame()} >Submit</Button>
+                <Button onClick={() => handleCreateGame()}>Submit</Button>
             </Layout>
         </>
     );

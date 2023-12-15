@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import { useRoom } from '../../hooks/useRoom';
 import { useUser } from '../../hooks/useUser';
-import socket from '../../providers/socket';
+import { socket } from '../../providers/socket';
 import { Form, Input, Button, Card, Col, Row, notification } from 'antd';
 
 import { UserContext } from '../../context/UserContext';

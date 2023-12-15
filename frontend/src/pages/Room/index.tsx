@@ -1,29 +1,27 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
-import socket from '../../providers/socket';
+import { socket } from '../../providers/socket';
 
 import { Room, RoomPlayers } from '../../interfaces/iRoom';
 import { User } from '../../interfaces/iUser';
 
 import api from '../../providers/api';
 import Chat from '../../components/Chat';
-import RoomInfo from '../../components/RoomInfo';
+import RoomInfo from './Components/RoomInfo';
 import UsersList from '../../components/UsersList';
 import EmotesList from '../../components/EmotesList';
 import { UserContext } from '../../context/UserContext';
 import { useHistory } from 'react-router-dom';
 import { Col, Layout, Row } from 'antd';
-import RoomContent from '../../components/RoomContent';
+import RoomContent from './Components/RoomContent';
 export default function RoomPage() {
     const { user, room }: { user: User | null; room: Room | null } = useContext(UserContext);
 
     const [players, setPlayers] = useState<RoomPlayers | null>(null);
-   
+
     const [admNick, setAdmNick] = useState('');
 
     const history = useHistory();
-
- 
 
     async function getPlayers() {
         const response = await api.get<RoomPlayers>(`/room/${room?.id}/players`);

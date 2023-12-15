@@ -1,14 +1,14 @@
 import { useContext, useEffect, useState } from 'react';
-import { Content, EnumRoundType, ReceivingRound } from '../../interfaces/iRound';
-import socket from '../../providers/socket';
-import { User } from '../../interfaces/iUser';
-import Answer from '../Answer';
-import { Typography } from 'antd';
-import { UserContext } from '../../context/UserContext';
+import { Content, EnumRoundType, ReceivingRound } from '../../../../interfaces/iRound';
+import { socket } from '../../../../providers/socket';
+import { User } from '../../../../interfaces/iUser';
+import Answer from '../../../../components/Answer';
+import { Card, Typography } from 'antd';
+import { UserContext } from '../../../../context/UserContext';
 
 const { Title } = Typography;
 export const DrawsToDescribe = () => {
-    const { user}: { user: User | null} = useContext(UserContext);
+    const { user }: { user: User | null } = useContext(UserContext);
     const [draws, setDraws] = useState<Content[]>([]);
 
     function deleteLastDraw(id: number) {
@@ -33,18 +33,18 @@ export const DrawsToDescribe = () => {
     }, []);
 
     return (
-        <div>
-            <Title level={1}>You have {draws.length} drawings to describe</Title>
-            {draws.map((draw) => (
-                <div>
+        <Card title="Sentences" style={{ margin: '20px' }}>
+            <div style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <Title level={1}>You have {draws.length} drawings to describe</Title>
+                {draws.map((draw) => (
                     <Answer
                         sender_id={user?.id ?? ''}
                         draw={draw.content}
                         callbackParent={() => deleteLastDraw(draw.id)}
                         match_id={draw.match_id}
                     />
-                </div>
-            ))}
-        </div>
+                ))}
+            </div>
+        </Card>
     );
 };

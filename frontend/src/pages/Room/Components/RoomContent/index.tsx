@@ -1,17 +1,17 @@
-import socket from '../../providers/socket';
+import { socket } from '../../../../providers/socket';
 
-import { MatchRounds } from '../../interfaces/iMatch';
+import { MatchRounds } from '../../../../interfaces/iMatch';
 
 import { useContext, useEffect, useState } from 'react';
-import { Room } from '../../interfaces/iRoom';
-import { User } from '../../interfaces/iUser';
+import { Room } from '../../../../interfaces/iRoom';
+import { User } from '../../../../interfaces/iUser';
 
-import { useUser } from '../../hooks/useUser';
+import { useUser } from '../../../../hooks/useUser';
 import { InititalSubmit } from '../InititalSubmit';
 import { SentencesToDraw } from '../SentencesToDraw';
 import { DrawsToDescribe } from '../DrawsToDescribe';
 import { ResultsSession } from '../ResultsSession';
-import { UserContext } from '../../context/UserContext';
+import { UserContext } from '../../../../context/UserContext';
 
 const RoomContent = () => {
     const { logoff } = useUser();
