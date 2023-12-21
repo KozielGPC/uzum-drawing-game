@@ -3,9 +3,9 @@ RUN mkdir -p /svr/app
 WORKDIR /svr/app
 RUN npm i -g @nestjs/cli --silent
 COPY package.json .
-COPY package-lock.json .
 RUN npm install --silent
+RUN npx prisma generate
 COPY . .
 
 EXPOSE $BACKEND_PORT
-CMD ["npm", "run", "start:debug"]
+CMD ["npm", "run", "start:dev"]
