@@ -1,7 +1,38 @@
-k8s_yaml("./infra/backend-deployment.yaml")
-k8s_resource("backend", port_forwards=8000, resource_deps=["deploy"])
-docker_build("udg-backend", "./backend")
+# docker_build(
+#   'person-crud-backend',
+#   context='./backend',
+#   live_update=[
+#     sync('./backend', '/app'),
+#   ]
+# )
 
-k8s_yaml("./infra/frontend-deployment.yaml")
-k8s_resource("frontend", port_forwards=3000, resource_deps=["deploy"])
-docker_build("udg-frontend", "./frontend")
+docker_build(
+  'frontend-udg',
+  context='./frontend',
+  live_update=[
+    sync('./frontend', '/app'),
+  ]
+)
+
+k8s_yaml(
+    [
+    #   'infra/dev/backend-secret.yml',
+      'infra/dev/frontend-secret.yml', 
+    #   'infra/dev/backend-deployment.yml', 
+    #   'infra/dev/services.yml', 
+      'infra/dev/frontend-deployment.yml'
+    ]
+)
+
+
+# k8s_resource(
+#   'backend-deployment',
+#   port_forwards=['3001:3001'],
+#   labels=["application"]
+# )
+
+k8s_resource(
+  'frontend-deployment',
+  port_forwards=['3000:3000'],
+  labels=["application"]
+)
