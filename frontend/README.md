@@ -31,6 +31,3 @@ yarn install
 ```
 yarn start
 ```
-
-## Backend Repository
-- https://github.com/KozielGPC/api-uzumdrawinggame

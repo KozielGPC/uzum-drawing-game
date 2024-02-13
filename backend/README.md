@@ -8,8 +8,12 @@ This is the backend of the UzumDrawingGame, that is a game developed by Uzum Tea
 - Prisma.JS
 - PostgreSQL
 
-## Front end Repository
-- https://github.com/KozielGPC/frontend-uzumdrawinggame
+## Steps to Run
+
+- docker-compose up -d
+- yarn install
+- yarn prisma generate
+- yarn prisma migrate deploy
 
 ## License
 
