@@ -58,7 +58,12 @@ export class MessagesGateway {
     @SubscribeMessage('sendRound')
     async sendRound(
         client: Socket,
-        payload: { match_id: string; content: string; sender_id: string; type: RoundType },
+        payload: {
+            match_id: string;
+            content: string;
+            sender_id: string;
+            type: RoundType;
+        },
     ): Promise<void> {
         const match = await this.matchService.findOne(payload.match_id);
 

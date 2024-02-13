@@ -16,7 +16,7 @@ export class MatchController {
         return this.matchService.findAll();
     }
 
-    @Get('rounds/:match_id')
+    @Get(':match_id/rounds')
     findRoundsOfMatch(@Param('match_id') match_id: string) {
         return this.matchService.findRoundsOfMatch(match_id);
     }
