@@ -3,7 +3,7 @@ import { useHistory, Link } from 'react-router-dom';
 import { useRoom } from '../../hooks/useRoom';
 import { useUser } from '../../hooks/useUser';
 import { socket } from '../../providers/socket';
-import { Form, Input, Button, Card, Col, Row, notification } from 'antd';
+import { Form, Input, Button, Card, Col, Row, notification, Typography } from 'antd';
 
 import { UserContext } from '../../context/UserContext';
 import { errorHandler } from '../../tools/errorHandler';
@@ -36,9 +36,14 @@ export default function UserLogin() {
     return (
         <>
             {contextHolder}
-            <Row justify="center" align="middle" style={{ minHeight: '100vh' }}>
+            <Row justify="center" align="middle" style={{ height: '20vh' }}>
                 <Col>
-                    <Card title="Login" style={{ width: 300 }}>
+                    <Typography.Title>UZUM DRAWING GAME</Typography.Title>
+                </Col>
+            </Row>
+            <Row justify="center" align="middle">
+                <Col>
+                    <Card title="Login" style={{ width: 350, height: 300, marginTop: 50 }}>
                         <Form form={form} onFinish={onFinish} initialValues={{ nickname: '', roomCode: '' }}>
                             <Form.Item
                                 name="nickname"

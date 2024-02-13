@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Button, Card } from 'antd';
+import { Button, Card, Layout, Typography, Flex } from 'antd';
 import { socket } from '../../providers/socket';
 
 interface Message {
@@ -16,7 +16,10 @@ function updateScroll() {
     element.scrollTop = element.scrollHeight;
 }
 
-export default function Chat(props: Props) {
+const { Content } = Layout;
+const { Paragraph, Text } = Typography;
+
+export function Chat(props: Props) {
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState<Message[]>([]);
 
@@ -40,25 +43,28 @@ export default function Chat(props: Props) {
 
     return (
         <Card title="Game chat">
-            <div id="chat">
+            <Content id="chat" style={{ width: '150px', overflow: 'auto' }}>
                 {messages.map((m, index) => (
-                    <p key={index}>
-                        <strong>{m.author + ': '}</strong>
+                    <Paragraph key={index}>
+                        <Text strong>{m.author + ': '}</Text>
                         {m.text}
-                    </p>
+                    </Paragraph>
                 ))}
-            </div>
+            </Content>
             <form onSubmit={sendMessage}>
-                <input
-                    maxLength={50}
-                    type="text"
-                    name="message"
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                ></input>
-                <Button type="primary" onClick={(e) => sendMessage(e)}>
-                    Send message
-                </Button>
+                <Flex vertical>
+                    <input
+                        style={{ width: '100%', fontSize: '14px' }}
+                        maxLength={50}
+                        type="text"
+                        name="message"
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                    ></input>
+                    <Button type="primary" onClick={(e) => sendMessage(e)} style={{ marginTop: '10px' }}>
+                        Send message
+                    </Button>
+                </Flex>
             </form>
         </Card>
     );

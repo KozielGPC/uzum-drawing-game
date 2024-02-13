@@ -1,5 +1,5 @@
 import { CreateMatch, Match } from '../interfaces/iMatch';
-import api from '../providers/api';
+import { api } from '../providers/api';
 
 const createMatch = (input: CreateMatch) => api.post<Match>('/match', input);
 

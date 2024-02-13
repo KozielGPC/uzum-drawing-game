@@ -68,7 +68,7 @@ export const InititalSubmit = () => {
     return (
         <>
             {contextHolder}
-            <Layout style={activeInitial === 0 ? { display: 'none' } : { display: 'flex' }}>
+            <Layout style={activeInitial === 0 ? { display: 'none' } : { display: 'flex', flexDirection: 'row' }}>
                 <Input
                     type="text"
                     placeholder="Write a random sentence, for example, a red dog skateboarding"
@@ -77,7 +77,7 @@ export const InititalSubmit = () => {
                     onChange={(e) => setPhrase(e.target.value)}
                     value={phrase}
                 />
-                <Button onClick={() => handleCreateGame()}>Submit</Button>
+                <Button style={{ marginLeft: '10px' }} onClick={() => handleCreateGame()}>Submit</Button>
             </Layout>
         </>
     );

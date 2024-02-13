@@ -11,7 +11,8 @@ interface Props {
     room_id: string;
 }
 
-export default function RoomInfo(props: Props) {
+const { Title } = Typography;
+export function RoomInfo(props: Props) {
     const { exit } = useRoom();
     const { logoff } = useUser();
     const history = useHistory();
@@ -37,8 +38,8 @@ export default function RoomInfo(props: Props) {
             {contextHolder}
             <Card>
                 <Flex vertical>
-                    <Typography.Text>Nick: {props.nickname}</Typography.Text>
-                    <Typography.Text>Room: {props.roomCode}</Typography.Text>
+                    <Title level={3}>Nick: {props.nickname}</Title>
+                    <Title style={{ marginTop: 0}} level={3}>Room: {props.roomCode}</Title>
                     <Button
                         type="primary"
                         // loading={loading}

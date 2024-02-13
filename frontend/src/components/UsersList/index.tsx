@@ -1,4 +1,3 @@
-import './styles.css';
 import { RoomPlayers } from '../../interfaces/iRoom';
 
 interface Props {

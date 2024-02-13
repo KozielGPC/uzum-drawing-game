@@ -5,7 +5,7 @@ import { MatchRounds } from '../../../../interfaces/iMatch';
 import { useContext, useEffect, useState } from 'react';
 import { Room } from '../../../../interfaces/iRoom';
 import { User } from '../../../../interfaces/iUser';
-
+import { Button, Card, Layout, Typography, Flex } from 'antd';
 import { useUser } from '../../../../hooks/useUser';
 import { InititalSubmit } from '../InititalSubmit';
 import { SentencesToDraw } from '../SentencesToDraw';
@@ -13,7 +13,10 @@ import { DrawsToDescribe } from '../DrawsToDescribe';
 import { ResultsSession } from '../ResultsSession';
 import { UserContext } from '../../../../context/UserContext';
 
-const RoomContent = () => {
+const { Content } = Layout;
+const { Paragraph, Text } = Typography;
+
+export const RoomContent = () => {
     const { logoff } = useUser();
     const { user, room }: { user: User | null; room: Room | null } = useContext(UserContext);
 
@@ -59,7 +62,7 @@ const RoomContent = () => {
     }, []);
 
     return (
-        <div className="content">
+        <Content style={{ width: '100%', padding: '0px 20px' }}>
             <InititalSubmit />
 
             {firstStart === 0 ? null : (
@@ -88,8 +91,6 @@ const RoomContent = () => {
             ) : null}
 
             <ResultsSession />
-        </div>
+        </Content>
     );
 };
-
-export default RoomContent;
