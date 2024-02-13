@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { MessagesService } from './messages.service';
 import { MessagesGateway } from './messages.gateway';
-import { MatchService } from 'src/modules/match/match.service';
+import { MatchService } from 'src/match/match.service';
 import { PrismaService } from 'src/database/PrismaService';
-import { RoundService } from 'src/modules/round/round.service';
-import { RoomService } from 'src/modules/room/room.service';
+import { RoundService } from 'src/round/round.service';
+import { RoomService } from 'src/room/room.service';
 
 @Module({
     providers: [MessagesGateway, MessagesService, MatchService, PrismaService, RoundService, RoomService],

@@ -2,10 +2,10 @@ import { WebSocketGateway, SubscribeMessage, MessageBody, WebSocketServer } from
 import { MessagesService } from './messages.service';
 import { Server, Socket } from 'socket.io';
 import { Logger } from '@nestjs/common';
-import { MatchService } from 'src/modules/match/match.service';
-import { RoundService } from 'src/modules/round/round.service';
+import { MatchService } from 'src/match/match.service';
+import { RoundService } from 'src/round/round.service';
 import { RoundType } from 'prisma/@generated';
-import { RoomService } from 'src/modules/room/room.service';
+import { RoomService } from 'src/room/room.service';
 
 @WebSocketGateway({ cors: true })
 export class MessagesGateway {
@@ -58,7 +58,12 @@ export class MessagesGateway {
     @SubscribeMessage('sendRound')
     async sendRound(
         client: Socket,
-        payload: { match_id: string; content: string; sender_id: string; type: RoundType },
+        payload: {
+            match_id: string;
+            content: string;
+            sender_id: string;
+            type: RoundType;
+        },
     ): Promise<void> {
         const match = await this.matchService.findOne(payload.match_id);
 

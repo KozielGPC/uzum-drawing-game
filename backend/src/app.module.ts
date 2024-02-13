@@ -1,12 +1,11 @@
 import { Module } from '@nestjs/common';
-import { UserModule } from './modules/user/user.module';
-import { MatchModule } from './modules/match/match.module';
-import { RoomModule } from './modules/room/room.module';
-import { RoundModule } from './modules/round/round.module';
+import { MatchModule } from './match/match.module';
+import { UserModule } from './user/user.module';
+import { RoundModule } from './round/round.module';
+import { RoomModule } from './room/room.module';
 import { MessagesModule } from './messages/messages.module';
 
 @Module({
-    imports: [UserModule, MatchModule, RoomModule, RoundModule, MessagesModule],
-    controllers: [],
+    imports: [MatchModule, UserModule, RoundModule, RoomModule, MessagesModule],
 })
 export class AppModule {}
