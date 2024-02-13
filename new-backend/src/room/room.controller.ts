@@ -1,34 +1,40 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { RoomService } from './room.service';
-import { CreateRoomDto } from './dto/create-room.dto';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import { ExitRoomDto } from './dto/exit-room.dto';
+import { JoinRoomDto } from './dto/join-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
+import { RoomService } from './room.service';
 
 @Controller('room')
 export class RoomController {
-  constructor(private readonly roomService: RoomService) {}
+    constructor(private readonly roomService: RoomService) {}
 
-  @Post()
-  create(@Body() createRoomDto: CreateRoomDto) {
-    return this.roomService.create(createRoomDto);
-  }
+    @Post()
+    async join(@Body() data: JoinRoomDto) {
+        return this.roomService.join(data);
+    }
 
-  @Get()
-  findAll() {
-    return this.roomService.findAll();
-  }
+    @Get('/:id/players')
+    async getPlayers(@Param() param: { id: string }) {
+        return this.roomService.getPlayers(param.id);
+    }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.roomService.findOne(+id);
-  }
+    @Patch()
+    async exit(@Body() data: ExitRoomDto) {
+        return this.roomService.exit(data);
+    }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRoomDto: UpdateRoomDto) {
-    return this.roomService.update(+id, updateRoomDto);
-  }
+    @Get()
+    async findAll() {
+        return this.roomService.findAll();
+    }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.roomService.remove(+id);
-  }
+    @Get('/:id')
+    async findOne(@Param() param: { id: string }) {
+        return this.roomService.findOne(param.id);
+    }
+
+    @Patch()
+    async update(@Body() data: UpdateRoomDto) {
+        return this.roomService.update(data);
+    }
 }

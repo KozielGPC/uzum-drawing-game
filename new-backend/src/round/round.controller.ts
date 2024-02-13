@@ -5,30 +5,30 @@ import { UpdateRoundDto } from './dto/update-round.dto';
 
 @Controller('round')
 export class RoundController {
-  constructor(private readonly roundService: RoundService) {}
+    constructor(private readonly roundService: RoundService) {}
 
-  @Post()
-  create(@Body() createRoundDto: CreateRoundDto) {
-    return this.roundService.create(createRoundDto);
-  }
+    @Post()
+    create(@Body() createRoundDto: CreateRoundDto) {
+        return this.roundService.create(createRoundDto);
+    }
 
-  @Get()
-  findAll() {
-    return this.roundService.findAll();
-  }
+    @Get()
+    findAll() {
+        return this.roundService.findAll();
+    }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.roundService.findOne(+id);
-  }
+    @Patch('/update')
+    update(@Body() data: UpdateRoundDto) {
+        return this.roundService.update(data);
+    }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRoundDto: UpdateRoundDto) {
-    return this.roundService.update(+id, updateRoundDto);
-  }
+    // @Get(':id')
+    // findOne(@Param('id') id: string) {
+    //   return this.roundService.findOne(+id);
+    // }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.roundService.remove(+id);
-  }
+    // @Delete(':id')
+    // remove(@Param('id') id: string) {
+    //   return this.roundService.remove(+id);
+    // }
 }

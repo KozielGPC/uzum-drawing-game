@@ -1,4 +1,7 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateRoundDto } from './create-round.dto';
+import { RoundType } from 'prisma/@generated';
 
-export class UpdateRoundDto extends PartialType(CreateRoundDto) {}
+export class UpdateRoundDto {
+    match_id: string;
+    sender_id: string;
+    content: string;
+}

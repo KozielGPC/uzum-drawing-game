@@ -1,38 +1,92 @@
-import {
-  WebSocketGateway,
-  SubscribeMessage,
-  MessageBody,
-} from '@nestjs/websockets';
+import { WebSocketGateway, SubscribeMessage, MessageBody, WebSocketServer } from '@nestjs/websockets';
 import { MessagesService } from './messages.service';
-import { CreateMessageDto } from './dto/create-message.dto';
-import { UpdateMessageDto } from './dto/update-message.dto';
+import { Server, Socket } from 'socket.io';
+import { Logger } from '@nestjs/common';
+import { MatchService } from 'src/match/match.service';
+import { RoundService } from 'src/round/round.service';
+import { RoundType } from 'prisma/@generated';
+import { RoomService } from 'src/room/room.service';
 
-@WebSocketGateway()
+@WebSocketGateway({ cors: true })
 export class MessagesGateway {
-  constructor(private readonly messagesService: MessagesService) {}
+    constructor(
+        private readonly messagesService: MessagesService,
+        private readonly matchService: MatchService,
+        private readonly roundService: RoundService,
+        private readonly roomService: RoomService,
+    ) {}
 
-  @SubscribeMessage('createMessage')
-  create(@MessageBody() createMessageDto: CreateMessageDto) {
-    return this.messagesService.create(createMessageDto);
-  }
+    @WebSocketServer() server: Server;
+    private logger: Logger = new Logger('SocketGateway');
 
-  @SubscribeMessage('findAllMessages')
-  findAll() {
-    return this.messagesService.findAll();
-  }
+    afterInit(server: Server) {
+        this.logger.log('Init');
+    }
 
-  @SubscribeMessage('findOneMessage')
-  findOne(@MessageBody() id: number) {
-    return this.messagesService.findOne(id);
-  }
+    handleConnection(client: Socket) {
+        this.logger.log(`Client Connected: ${client.id}`);
+    }
 
-  @SubscribeMessage('updateMessage')
-  update(@MessageBody() updateMessageDto: UpdateMessageDto) {
-    return this.messagesService.update(updateMessageDto.id, updateMessageDto);
-  }
+    handleDisconnect(client: Socket) {
+        this.logger.log(`Client Disconnected: ${client.id}`);
+    }
 
-  @SubscribeMessage('removeMessage')
-  remove(@MessageBody() id: number) {
-    return this.messagesService.remove(id);
-  }
+    @SubscribeMessage('msgToServer')
+    handleMessage(client: Socket, payload: string): void {
+        this.server.emit('msgToClient', payload, client.id);
+    }
+
+    @SubscribeMessage('sendMessage')
+    chatMessage(client: Socket, payload: string): void {
+        this.server.emit('messageReceived', payload, client.id);
+    }
+
+    @SubscribeMessage('updateRoomPlayers')
+    async updateRoomPlayers(client: Socket, payload: string): Promise<void> {
+        const roomPlayers = await this.roomService.getPlayers(payload);
+        this.server.emit('updatePlayers', roomPlayers, client.id);
+    }
+
+    @SubscribeMessage('sendNextRound')
+    async sendNextRound(client: Socket, payload: string): Promise<void> {
+        const rounds = await this.matchService.findRoundsOfMatch(payload);
+
+        const lastRound = rounds.rounds[0];
+        this.server.emit('receiveRound', lastRound, client.id);
+    }
+
+    @SubscribeMessage('sendRound')
+    async sendRound(
+        client: Socket,
+        payload: { match_id: string; content: string; sender_id: string; type: RoundType },
+    ): Promise<void> {
+        const match = await this.matchService.findOne(payload.match_id);
+
+        const receiver_id = this.matchService.findNextReceiver(match.sort, payload.sender_id);
+
+        const round = await this.roundService.create({
+            type: payload.type,
+            match_id: payload.match_id,
+            content: payload.content,
+            sender_id: payload.sender_id,
+            receiver_id: receiver_id,
+        });
+
+        if (receiver_id) {
+            this.server.emit('receiveRound', round, client.id);
+        } else {
+            const rounds = await this.matchService.findRoundsOfMatch(payload.match_id);
+            this.server.emit('endMatch', { match_id: payload.match_id, rounds }, client.id);
+        }
+    }
+
+    @SubscribeMessage('addShowRound')
+    async addShowRound(client: Socket, payload: any): Promise<void> {
+        this.server.emit('showNext', payload, client.id);
+    }
+
+    @SubscribeMessage('restartGame')
+    async restartGame(client: Socket, payload: any): Promise<void> {
+        this.server.emit('restartGame', payload, client.id);
+    }
 }
