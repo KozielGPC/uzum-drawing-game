@@ -1,28 +1,33 @@
 import { RoomPlayers } from '../../interfaces/iRoom';
+import { List, Card, Layout } from 'antd';
 
 interface Props {
     players: RoomPlayers;
     adm_nick: string;
 }
 
-export default function UsersList(props: Props) {
+const { Content } = Layout;
+
+export function UsersList(props: Props) {
     return (
-        <div className="users">
-            <h1>Users</h1>
+        <Card title="Users">
             {/* <h1>Showadm {showAdm ? 'sim' : 'nao'}</h1> */}
-            <div className="players">
-                <ul>
-                    {props.players?.users.map((player) => (
-                        <li key={player.user_id}>
-                            {props.adm_nick === player.user.username ? (
-                                <span className="admin">{player.user.username} </span>
+            <Content>
+                <List 
+                    split={false}
+                    itemLayout="vertical"
+                    dataSource={props.players?.users}
+                    renderItem={(item) => (
+                        <List.Item key={item.user_id} style={{ padding: '0px'}}> 
+                            {props.adm_nick === item.user.username ? (
+                                <span className="admin">{item.user.username} </span>
                             ) : (
-                                <span className="player">{player.user.username} </span>
+                                <span className="player">{item.user.username} </span>
                             )}
-                        </li>
-                    ))}
-                </ul>
-            </div>
-        </div>
+                        </List.Item>
+                    )}
+                />
+            </Content>
+        </Card>
     );
 }

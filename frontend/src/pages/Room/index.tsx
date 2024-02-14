@@ -8,8 +8,8 @@ import { User } from '../../interfaces/iUser';
 import { api } from '../../providers/api';
 import { Chat } from '../../components/Chat';
 import { RoomInfo } from './Components/RoomInfo';
-import UsersList from '../../components/UsersList';
-import EmotesList from '../../components/EmotesList';
+import { UsersList } from '../../components/UsersList';
+// import EmotesList from '../../components/EmotesList';
 import { UserContext } from '../../context/UserContext';
 import { useHistory } from 'react-router-dom';
 import { Col, Layout, Row } from 'antd';
@@ -65,7 +65,7 @@ export default function RoomPage() {
                     </Col>
                     <Col span={6}>
                         <UsersList adm_nick={admNick ?? ''} players={players ?? { users: [], room_adm: user }} />
-                        <EmotesList />
+                        {/* <EmotesList /> */}
                     </Col>
                 </Row>
             </Col>

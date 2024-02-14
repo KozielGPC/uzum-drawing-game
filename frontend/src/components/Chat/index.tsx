@@ -42,7 +42,7 @@ export function Chat(props: Props) {
     }
 
     return (
-        <Card title="Game chat">
+        <Card title="Game chat" style={{ marginTop: '20px' }}>
             <Content id="chat" style={{ width: '150px', overflow: 'auto' }}>
                 {messages.map((m, index) => (
                     <Paragraph key={index}>
