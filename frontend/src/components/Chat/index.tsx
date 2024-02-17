@@ -42,30 +42,32 @@ export function Chat(props: Props) {
     }
 
     return (
-        <Card title="Game chat" style={{ marginTop: '20px' }}>
-            <Content id="chat" style={{ width: '150px', overflow: 'auto' }}>
-                {messages.map((m, index) => (
-                    <Paragraph key={index}>
-                        <Text strong>{m.author + ': '}</Text>
-                        {m.text}
-                    </Paragraph>
-                ))}
+        <Card title="Game chat" style={{ marginTop: '20px', height: '350px' }}>
+            <Content style={{ width: '100%' }}>
+                <Content id="chat" style={{ width: '100%', overflow: 'auto', height: '150px' }}>
+                    {messages.map((m, index) => (
+                        <Paragraph key={index}>
+                            <Text strong>{m.author + ': '}</Text>
+                            {m.text}
+                        </Paragraph>
+                    ))}
+                </Content>
+                <form onSubmit={sendMessage}>
+                    <Flex vertical>
+                        <input
+                            style={{ width: '100%', fontSize: '14px', lineHeight: '16px', padding: '10px' }}
+                            maxLength={50}
+                            type="text"
+                            name="message"
+                            value={message}
+                            onChange={(e) => setMessage(e.target.value)}
+                        ></input>
+                        <Button type="primary" onClick={(e) => sendMessage(e)} style={{ marginTop: '10px' }}>
+                            Send message
+                        </Button>
+                    </Flex>
+                </form>
             </Content>
-            <form onSubmit={sendMessage}>
-                <Flex vertical>
-                    <input
-                        style={{ width: '100%', fontSize: '14px' }}
-                        maxLength={50}
-                        type="text"
-                        name="message"
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                    ></input>
-                    <Button type="primary" onClick={(e) => sendMessage(e)} style={{ marginTop: '10px' }}>
-                        Send message
-                    </Button>
-                </Flex>
-            </form>
         </Card>
     );
 }

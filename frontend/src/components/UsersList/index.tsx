@@ -1,5 +1,6 @@
 import { RoomPlayers } from '../../interfaces/iRoom';
 import { List, Card, Layout } from 'antd';
+import './styles.css'
 
 interface Props {
     players: RoomPlayers;
@@ -11,7 +12,6 @@ const { Content } = Layout;
 export function UsersList(props: Props) {
     return (
         <Card title="Users">
-            {/* <h1>Showadm {showAdm ? 'sim' : 'nao'}</h1> */}
             <Content>
                 <List 
                     split={false}
