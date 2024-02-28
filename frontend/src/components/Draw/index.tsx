@@ -50,7 +50,7 @@ export function Draw(props: Props) {
     }
 
     const [selectedColor, setSelectedColor] = useState('#000000');
-    const [selectedRadius, setSelectedRadius] = useState(5);
+    const [selectedRadius, setSelectedRadius] = useState(3);
     const [canvas, setCanvas] = useState<any>();
     return (
         <>
@@ -63,8 +63,8 @@ export function Draw(props: Props) {
                         brushColor={selectedColor}
                         brushRadius={selectedRadius}
                         lazyRadius={0}
-                        canvasWidth={500}
-                        canvasHeight={500}
+                        canvasWidth={400}
+                        canvasHeight={400}
                         hideGrid={false}
                         disabled={false}
                         ref={(canvasDraw) => setCanvas(canvasDraw)}

@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import ShowDraw from '../../components/ShowDraw';
-
+import { errorHandler } from '../../tools/errorHandler';
 import { socket } from '../../providers/socket';
 import { EnumRoundType } from '../../interfaces/iRound';
-
-import './styles.css';
+import { Flex, Layout, notification, Typography, Button } from 'antd';
 
 interface Props {
     draw: string;
@@ -15,6 +14,7 @@ interface Props {
 
 export default function Answer(props: Props) {
     const [phrase, setPhrase] = useState('');
+    const [notificationApi, contextHolder] = notification.useNotification();
 
     async function handleSubmit(e: any) {
         e.preventDefault();
@@ -29,34 +29,51 @@ export default function Answer(props: Props) {
 
                 socket.emit('sendRound', data);
             } else {
-                alert('ia dar erro ai mane, tenta de novo');
+                const error = {
+                    response: {
+                        status: 400,
+                        data: {
+                            message: 'Please write something',
+                        },
+                    },
+                };
+                errorHandler(error, notificationApi);
             }
         } catch (error) {
-            alert('deu erro mané - Answer');
-            console.log(error);
+            errorHandler(error, notificationApi);
         }
     }
 
     return (
-        <div className="answer-content">
-            <ShowDraw draw={props.draw} />
-            <input
-                type="text"
-                placeholder="What do you think this represents?"
-                name="answer"
-                id="answer"
-                value={phrase}
-                onChange={(e) => setPhrase(e.target.value)}
-            />
-            <button
-                type="submit"
-                onClick={(e) => {
-                    handleSubmit(e);
-                    props.callbackParent();
-                }}
-            >
-                Send!
-            </button>
-        </div>
+        <>
+            {contextHolder}
+            <Flex vertical>
+                <ShowDraw draw={props.draw} />
+                <Flex
+                    style={{ marginTop: '20px', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}
+                >
+                    <input
+                        type="text"
+                        placeholder="What do you think this represents?"
+                        name="answer"
+                        id="answer"
+                        value={phrase}
+                        onChange={(e) => setPhrase(e.target.value)}
+                        style={{ width: '70%' }}
+                    />
+                    <Button
+                        style={{ width: '20%' }}
+                        type="primary"
+                        htmlType="submit"
+                        onClick={(e) => {
+                            handleSubmit(e);
+                            props.callbackParent();
+                        }}
+                    >
+                        Send!
+                    </Button>
+                </Flex>
+            </Flex>
+        </>
     );
 }
