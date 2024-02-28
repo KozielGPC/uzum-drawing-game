@@ -9,6 +9,24 @@ Uzum Drawing Game is a draw and guess game to play with your friends
 - PostgreSQL
 - Websockets
 
+## Steps to run
+
+```
+yarn install
+```
+
+```
+yarn prisma migrate deploy
+```
+
+```
+yarn prisma generate
+```
+
+```
+yarn start:dev
+```
+
 ## To do
 - Add authentication
 - Add swagger
@@ -50,15 +68,22 @@ yarn start
 ```
 ## To Do
 - Migrate to Ant Design
+- Update text inputs to use antd
+- Add auth wrapper provider
+- Update canvas drawing component to use another package
+- Update cards componentes to use colors from the previous layout
 - Add Light/Dark Theme
 - Add token auth handler
 - Add ptBR/enUS translation
 
-
 # Infra
+## Used Technologies
+- Docker
+- Kubernetes
+- Tilt
+- Docker Compose
 
 ## To Do
-- Update canvas drawing component to use another package
 - Update backend dockerfile to run with tilt
 - Add postgres into a kubernetes file
 - Run everything with tilt
