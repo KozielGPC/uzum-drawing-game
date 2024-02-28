@@ -1,10 +1,15 @@
 import { useState } from 'react';
-import CanvasDraw from 'react-canvas-draw';
 import { CompactPicker } from 'react-color';
 import { FiTrash, FiArrowLeft } from 'react-icons/fi';
 
 import { socket } from '../../providers/socket';
 import { EnumRoundType } from '../../interfaces/iRound';
+import { Flex, Layout, notification, Typography, Button } from 'antd';
+import { errorHandler } from '../../tools/errorHandler';
+import CanvasDraw from 'react-canvas-draw';
+
+const { Content } = Layout;
+const { Title } = Typography;
 
 interface Props {
     phrase: string;
@@ -13,7 +18,9 @@ interface Props {
     sender_id: string | null;
 }
 
-export default function Draw(props: Props) {
+export function Draw(props: Props) {
+    const [notificationApi, contextHolder] = notification.useNotification();
+
     async function handleSubmit(e: any) {
         e.preventDefault();
         try {
@@ -27,10 +34,18 @@ export default function Draw(props: Props) {
 
                 socket.emit('sendRound', data);
             } else {
-                alert('deu erro no desenho ai mano envia de novo');
+                const error = {
+                    response: {
+                        status: 400,
+                        data: {
+                            message: 'Please draw something',
+                        },
+                    },
+                };
+                errorHandler(error, notificationApi);
             }
         } catch (error) {
-            alert('deu erro mané - Draw');
+            errorHandler(error, notificationApi);
         }
     }
 
@@ -38,59 +53,77 @@ export default function Draw(props: Props) {
     const [selectedRadius, setSelectedRadius] = useState(5);
     const [canvas, setCanvas] = useState<any>();
     return (
-        <div>
-            <h2>Draw: {props.phrase}</h2>
-            <div>
-                <CanvasDraw
-                    loadTimeOffset={8}
-                    brushColor={selectedColor}
-                    brushRadius={selectedRadius}
-                    lazyRadius={0}
-                    canvasWidth={538}
-                    canvasHeight={538}
-                    hideGrid={false}
-                    disabled={false}
-                    ref={(canvasDraw) => setCanvas(canvasDraw)}
-                />
-            </div>
-            <div>
-                <CompactPicker
-                    color={selectedColor}
-                    onChangeComplete={(color) => {
-                        setSelectedColor(color.hex);
-                    }}
-                />
-                <input
-                    type="number"
-                    value={selectedRadius}
-                    onChange={(e) => setSelectedRadius(parseInt(e.target.value, 10))}
-                />
-            </div>
-            <div>
-                <button
-                    onClick={() => {
-                        canvas.undo();
-                    }}
+        <>
+            {contextHolder}
+            <Content>
+                <Title level={3}>Draw: {props.phrase}</Title>
+                <div>
+                    <CanvasDraw
+                        loadTimeOffset={8}
+                        brushColor={selectedColor}
+                        brushRadius={selectedRadius}
+                        lazyRadius={0}
+                        canvasWidth={500}
+                        canvasHeight={500}
+                        hideGrid={false}
+                        disabled={false}
+                        ref={(canvasDraw) => setCanvas(canvasDraw)}
+                    />
+                </div>
+                <Flex
+                    vertical
+                    style={{ justifyContent: 'center', alignItems: 'center', width: '100%', marginTop: '20px' }}
                 >
-                    <FiArrowLeft /> Undo
-                </button>
-                <button
-                    onClick={() => {
-                        canvas.clear();
-                    }}
-                >
-                    <FiTrash /> Clear
-                </button>
-                <button
-                    type="submit"
-                    onClick={(e) => {
-                        handleSubmit(e);
-                        props.callbackParent();
-                    }}
-                >
-                    Send!
-                </button>
-            </div>
-        </div>
+                    <CompactPicker
+                        color={selectedColor}
+                        onChangeComplete={(color) => {
+                            setSelectedColor(color.hex);
+                        }}
+                    />
+                    <input
+                        style={{ marginTop: '10px' }}
+                        type="number"
+                        value={selectedRadius}
+                        onChange={(e) => setSelectedRadius(parseInt(e.target.value, 10))}
+                    />
+
+                    <Flex
+                        style={{
+                            justifyContent: 'space-evenly',
+                            alignItems: 'center',
+                            width: '100%',
+                            marginTop: '10px',
+                        }}
+                    >
+                        <Button
+                            type="primary"
+                            onClick={() => {
+                                canvas.undo();
+                            }}
+                        >
+                            <FiArrowLeft /> Undo
+                        </Button>
+                        <Button
+                            type="primary"
+                            onClick={() => {
+                                canvas.clear();
+                            }}
+                        >
+                            <FiTrash /> Clear
+                        </Button>
+                        <Button
+                            type="primary"
+                            htmlType="submit"
+                            onClick={(e) => {
+                                handleSubmit(e);
+                                props.callbackParent();
+                            }}
+                        >
+                            Send!
+                        </Button>
+                    </Flex>
+                </Flex>
+            </Content>
+        </>
     );
 }

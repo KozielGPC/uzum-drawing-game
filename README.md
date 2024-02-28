@@ -58,6 +58,7 @@ yarn start
 # Infra
 
 ## To Do
+- Update canvas drawing component to use another package
 - Update backend dockerfile to run with tilt
 - Add postgres into a kubernetes file
 - Run everything with tilt

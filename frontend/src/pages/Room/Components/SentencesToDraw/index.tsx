@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from 'react';
 import { Content, EnumRoundType, ReceivingRound } from '../../../../interfaces/iRound';
-import Draw from '../../../../components/Draw';
+import { Draw } from '../../../../components/Draw';
 import { socket } from '../../../../providers/socket';
 import { User } from '../../../../interfaces/iUser';
-import { Card, Typography } from 'antd';
+import { Card, Divider, Typography } from 'antd';
 import { UserContext } from '../../../../context/UserContext';
 
 const { Title } = Typography;
@@ -47,12 +47,15 @@ export const SentencesToDraw = () => {
             <div style={{ justifyContent: 'center', alignItems: 'center' }}>
                 <Title level={1}>You have {phrases.length} sentences to draw</Title>
                 {phrases.map((phrase) => (
-                    <Draw
-                        sender_id={user?.id ?? ''}
-                        phrase={phrase.content}
-                        match_id={phrase.match_id}
-                        callbackParent={() => deleteLastPhrase(phrase.id)}
-                    />
+                    <>
+                        <Divider />
+                        <Draw
+                            sender_id={user?.id ?? ''}
+                            phrase={phrase.content}
+                            match_id={phrase.match_id}
+                            callbackParent={() => deleteLastPhrase(phrase.id)}
+                        />
+                    </>
                 ))}
             </div>
         </Card>
