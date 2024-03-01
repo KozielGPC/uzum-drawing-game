@@ -33,7 +33,7 @@ export interface Match {
 
 export interface EndMatch {
     match_id: string;
-    rounds: MatchRounds;
+    rounds: Round[];
 }
 
 export interface Receiver {
@@ -63,14 +63,4 @@ export interface Round {
     updated_at?: Date;
     receiver: Receiver;
     sender: Sender;
-}
-
-export interface MatchRounds {
-    id: string;
-    match_adm_id: string;
-    room_id: string;
-    sort: string;
-    created_at: Date;
-    updated_at?: Date;
-    rounds: Round[];
 }

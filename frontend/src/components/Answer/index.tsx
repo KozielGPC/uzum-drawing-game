@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import ShowDraw from '../../components/ShowDraw';
+import { ShowDraw } from '../../components/ShowDraw';
 import { errorHandler } from '../../tools/errorHandler';
 import { socket } from '../../providers/socket';
 import { EnumRoundType } from '../../interfaces/iRound';

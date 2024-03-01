@@ -99,28 +99,24 @@ export class MatchService {
     }
 
     async findRoundsOfMatch(match_id: string) {
-        const match = await this.prisma.match.findFirst({
+        const rounds = await this.prisma.round.findMany({
             where: {
-                id: match_id,
+                match_id: match_id,
             },
             include: {
-                rounds: {
-                    include: {
-                        receiver: true,
-                        sender: true,
-                    },
-                },
+                receiver: true,
+                sender: true,
             },
             orderBy: {
                 created_at: 'desc',
             },
         });
 
-        if (!match) {
+        if (!rounds) {
             throw new HttpException('Match not found', 404);
         }
 
-        return match;
+        return rounds;
     }
 
     findNextReceiver(sort: string, current_player_id: string) {

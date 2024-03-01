@@ -4,7 +4,7 @@ interface Props {
     draw: string;
 }
 
-export default function ShowDraw(props: Props) {
+export function ShowDraw(props: Props) {
     return (
         <div>
             <div>

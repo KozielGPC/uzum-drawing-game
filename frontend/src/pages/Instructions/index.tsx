@@ -1,11 +1,10 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, Col, Row, Typography } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 
 const { Title, Text } = Typography;
 
-export default function Instructions() {
+export function Instructions() {
     return (
         <Row justify="center" align="middle" style={{ minHeight: '100vh' }}>
             <Col>

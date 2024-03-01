@@ -10,11 +10,11 @@ const { Title } = Typography;
 export const SentencesToDraw = () => {
     const { user }: { user: User | null } = useContext(UserContext);
     const [phrases, setPhrases] = useState<Content[]>([
-        {
-            content: 'first phrase',
-            id: 0,
-            match_id: '1d7a5852-bc0e-4fd2-a651-fa1ab14c99bd',
-        },
+        // {
+        //     content: 'first phrase',
+        //     id: 0,
+        //     match_id: '1d7a5852-bc0e-4fd2-a651-fa1ab14c99bd',
+        // },
     ]);
 
     function deleteLastPhrase(id: number) {

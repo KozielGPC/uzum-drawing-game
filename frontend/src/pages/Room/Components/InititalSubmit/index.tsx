@@ -40,6 +40,9 @@ export const InititalSubmit = () => {
                             receiver_id: match.sort.split(',')[1],
                         })
                             .then(() => {
+                                console.log('emitindo next round');
+                                console.log('match: ', match);
+
                                 socket.emit('sendNextRound', match.id);
                             })
                             .catch((err) => {
@@ -77,7 +80,9 @@ export const InititalSubmit = () => {
                     onChange={(e) => setPhrase(e.target.value)}
                     value={phrase}
                 />
-                <Button style={{ marginLeft: '10px' }} onClick={() => handleCreateGame()}>Submit</Button>
+                <Button style={{ marginLeft: '10px' }} onClick={() => handleCreateGame()}>
+                    Submit
+                </Button>
             </Layout>
         </>
     );

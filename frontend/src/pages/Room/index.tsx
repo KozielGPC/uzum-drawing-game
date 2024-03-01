@@ -14,7 +14,7 @@ import { UserContext } from '../../context/UserContext';
 import { useHistory } from 'react-router-dom';
 import { Col, Layout, Row } from 'antd';
 import { RoomContent } from './Components/RoomContent';
-export default function RoomPage() {
+export function RoomPage() {
     const { user, room }: { user: User | null; room: Room | null } = useContext(UserContext);
 
     const [players, setPlayers] = useState<RoomPlayers | null>(null);
@@ -22,6 +22,10 @@ export default function RoomPage() {
     const [admNick, setAdmNick] = useState('');
 
     const history = useHistory();
+
+    if (room === null || user === null) {
+        history.push('/');
+    }
 
     async function getPlayers() {
         const response = await api.get<RoomPlayers>(`/room/${room?.id}/players`);
@@ -31,9 +35,11 @@ export default function RoomPage() {
     }
 
     useEffect(() => {
-        setAdmNick(room?.room_adm?.username ?? '');
-
-        getPlayers();
+        if (room !== null || user !== null) {
+            setAdmNick(room?.room_adm?.username ?? '');
+    
+            getPlayers();
+        }
     }, [room]);
 
     useEffect(() => {
@@ -42,9 +48,6 @@ export default function RoomPage() {
         });
     }, []);
 
-    // if (room === null || user === null) {
-    //     history.push('/');
-    // }
     return (
         <Row justify="center" align="middle">
             <Col style={{ width: '100%', padding: '20px' }} span={24}>

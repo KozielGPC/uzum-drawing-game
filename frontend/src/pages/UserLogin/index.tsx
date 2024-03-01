@@ -8,7 +8,7 @@ import { Form, Input, Button, Card, Col, Row, notification, Typography } from 'a
 import { UserContext } from '../../context/UserContext';
 import { errorHandler } from '../../tools/errorHandler';
 
-export default function UserLogin() {
+export function UserLogin() {
     const history = useHistory();
     const [form] = Form.useForm();
     const { setRoom, setUser } = useContext(UserContext);
