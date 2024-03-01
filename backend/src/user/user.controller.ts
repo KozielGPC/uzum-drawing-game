@@ -26,4 +26,9 @@ export class UserController {
     async findOne(@Param() param: { id: string }) {
         return this.userService.findOne(param.id);
     }
+
+    @Post('/logout-all')
+    async logoutAllPlayers() {
+        return this.userService.logoutAllPlayers();
+    }
 }

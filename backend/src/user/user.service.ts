@@ -121,4 +121,34 @@ export class UserService {
         }
         return user;
     }
+
+    async logoutAllPlayers() {
+        const transactionArray = [];
+        transactionArray.push(
+            this.prisma.room.updateMany({
+                data: {
+                    active: false,
+                },
+            }),
+        );
+
+        transactionArray.push(
+            this.prisma.roomHasUsers.updateMany({
+                data: {
+                    active: false,
+                    updated_at: new Date(),
+                },
+            }),
+        );
+
+        transactionArray.push(
+            this.prisma.user.updateMany({
+                data: {
+                    active: false,
+                },
+            }),
+        );
+
+        return this.prisma.$transaction(transactionArray);
+    }
 }
