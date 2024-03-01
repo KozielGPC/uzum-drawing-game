@@ -1,4 +1,4 @@
-import { WebSocketGateway, SubscribeMessage, MessageBody, WebSocketServer } from '@nestjs/websockets';
+import { WebSocketGateway, SubscribeMessage, WebSocketServer } from '@nestjs/websockets';
 import { MessagesService } from './messages.service';
 import { Server, Socket } from 'socket.io';
 import { Logger } from '@nestjs/common';
@@ -6,6 +6,7 @@ import { MatchService } from 'src/match/match.service';
 import { RoundService } from 'src/round/round.service';
 import { RoundType } from 'prisma/@generated';
 import { RoomService } from 'src/room/room.service';
+import { logger } from 'src/utils/logger';
 
 @WebSocketGateway({ cors: true })
 export class MessagesGateway {
@@ -38,21 +39,40 @@ export class MessagesGateway {
 
     @SubscribeMessage('sendMessage')
     chatMessage(client: Socket, payload: string): void {
+        logger.info(`ClientId: ${client.id} - Recebido mensagem no socket [sendMessage] com payload: ${payload}`);
         this.server.emit('messageReceived', payload, client.id);
     }
 
     @SubscribeMessage('updateRoomPlayers')
     async updateRoomPlayers(client: Socket, payload: string): Promise<void> {
+        logger.info(`Recebido mensagem no socket [updateRoomPlayers] com payload: ${payload}`);
         const roomPlayers = await this.roomService.getPlayers(payload);
+        if (roomPlayers) {
+            logger.info(
+                `ClientId: ${client.id} - Recebido mensagem no socket [updateRoomPlayers] - RoomPlayers: ${roomPlayers}`,
+            );
+        } else {
+            logger.warning(
+                `ClientId: ${client.id} - Recebido mensagem no socket [updateRoomPlayers] - RoomPlayers Vazio: ${roomPlayers}`,
+            );
+        }
         this.server.emit('updatePlayers', roomPlayers, client.id);
     }
 
     @SubscribeMessage('sendNextRound')
     async sendNextRound(client: Socket, payload: string): Promise<void> {
+        logger.info(`ClientId: ${client.id} - Recebido mensagem no socket [sendNextRound] com payload: ${payload}`);
         const rounds = await this.matchService.findRoundsOfMatch(payload);
 
-        const lastRound = rounds.rounds[0];
-        this.server.emit('receiveRound', lastRound, client.id);
+        if (rounds) {
+            logger.info(`ClientId: ${client.id} - Recebido mensagem no socket [sendNextRound] - Rounds: ${rounds}`);
+            const lastRound = rounds[0];
+            this.server.emit('receiveRound', lastRound, client.id);
+        } else {
+            logger.warning(
+                `ClientId: ${client.id} - Recebido mensagem no socket [sendNextRound] - Rounds Vazio: ${rounds}`,
+            );
+        }
     }
 
     @SubscribeMessage('sendRound')
@@ -65,6 +85,7 @@ export class MessagesGateway {
             type: RoundType;
         },
     ): Promise<void> {
+        logger.info(`ClientId: ${client.id} - Recebido mensagem no socket [sendRound] com payload: ${payload}`);
         const match = await this.matchService.findOne(payload.match_id);
 
         const receiver_id = this.matchService.findNextReceiver(match.sort, payload.sender_id);
@@ -77,21 +98,26 @@ export class MessagesGateway {
             receiver_id: receiver_id,
         });
 
+        logger.info(`ClientId: ${client.id} - Recebido mensagem no socket [sendRound] com receiver_id: ${receiver_id}`);
+
         if (receiver_id) {
             this.server.emit('receiveRound', round, client.id);
         } else {
             const rounds = await this.matchService.findRoundsOfMatch(payload.match_id);
+            logger.info(`ClientId: ${client.id} - Recebido mensagem no socket [sendRound] com rounds: ${rounds}`);
             this.server.emit('endMatch', { match_id: payload.match_id, rounds }, client.id);
         }
     }
 
     @SubscribeMessage('addShowRound')
-    async addShowRound(client: Socket, payload: any): Promise<void> {
-        this.server.emit('showNext', payload, client.id);
+    async addShowRound(client: Socket): Promise<void> {
+        logger.info(`ClientId: ${client.id} - Recebido mensagem no socket [addShowRound]`);
+        this.server.emit('showNext', client.id);
     }
 
     @SubscribeMessage('restartGame')
     async restartGame(client: Socket, payload: any): Promise<void> {
+        logger.info(`ClientId: ${client.id} - Recebido mensagem no socket [restartGame] com payload: ${payload}`);
         this.server.emit('restartGame', payload, client.id);
     }
 }
