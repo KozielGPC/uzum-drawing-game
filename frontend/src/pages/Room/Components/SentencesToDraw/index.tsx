@@ -22,10 +22,6 @@ export const SentencesToDraw = () => {
     }
 
     useEffect(() => {
-        console.log('phrases', phrases);
-    }, [phrases]);
-
-    useEffect(() => {
         socket.on('receiveRound', async (data: ReceivingRound) => {
             if (data.receiver_id === user?.id) {
                 switch (data.type) {

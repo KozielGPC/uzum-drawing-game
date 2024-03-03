@@ -85,7 +85,9 @@ export class MessagesGateway {
             type: RoundType;
         },
     ): Promise<void> {
-        logger.info(`ClientId: ${client.id} - Recebido mensagem no socket [sendRound] com payload: ${payload}`);
+        logger.info(
+            `ClientId: ${client.id} - Recebido mensagem no socket [sendRound] com payload: ${JSON.stringify(payload)}`,
+        );
         const match = await this.matchService.findOne(payload.match_id);
 
         const receiver_id = this.matchService.findNextReceiver(match.sort, payload.sender_id);
@@ -104,8 +106,12 @@ export class MessagesGateway {
             this.server.emit('receiveRound', round, client.id);
         } else {
             const rounds = await this.matchService.findRoundsOfMatch(payload.match_id);
-            logger.info(`ClientId: ${client.id} - Recebido mensagem no socket [sendRound] com rounds: ${rounds}`);
-            this.server.emit('endMatch', { match_id: payload.match_id, rounds }, client.id);
+            console.log('rounds:', rounds);
+
+            logger.info(
+                `ClientId: ${client.id} - Recebido mensagem no socket [sendRound] com rounds: ${rounds.toString()}`,
+            );
+            this.server.emit('endMatch', payload.match_id, client.id);
         }
     }
 
