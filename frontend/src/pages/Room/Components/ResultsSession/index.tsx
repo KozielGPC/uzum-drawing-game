@@ -23,19 +23,6 @@ export function ResultsSession() {
     const [rounds, setRounds] = useState<Round[]>([]);
     const [showAdm, setShowAdm] = useState(false);
 
-    async function getMatchRounds(match_id: string) {
-        const response = await api.get<any>(`/match/${match_id}/rounds`);
-        const match_rounds = response.data;
-
-        const match: Match = {
-            id: match_id,
-            rounds: match_rounds,
-        };
-
-        const newMatches = [...matches, match];
-        setMatches(newMatches);
-    }
-
     function restartGame() {
         socket.emit('restartGame', 'macaco');
         setShowAdm(false);
@@ -46,6 +33,19 @@ export function ResultsSession() {
     }
 
     useEffect(() => {
+        async function getMatchRounds(match_id: string) {
+            const response = await api.get<any>(`/match/${match_id}/rounds`);
+            const match_rounds = response.data;
+
+            const match: Match = {
+                id: match_id,
+                rounds: match_rounds,
+            };
+
+            const newMatches = [...matches, match];
+            setMatches(newMatches);
+        }
+
         socket.on('endMatch', async (match_id: string) => {
             if (isAdmin) {
                 setShowAdm(true);
@@ -57,12 +57,16 @@ export function ResultsSession() {
             if (matches.length > 0) {
                 setActiveResult(true);
                 const match = matches[0];
-                if (match.rounds.length > 0) {
-                    const nextRound = match.rounds.shift();
+                console.log('match.rounds.length >>> ', match.rounds.length);
+                console.log('rounds.length >>> ', rounds.length);
+                if (match.rounds.length > rounds.length) {
+                    const nextRound = match.rounds[rounds.length];
+                    console.log('nextRound >>> ', nextRound);
+
                     if (nextRound) {
-                        setRounds([nextRound]);
+                        const newRounds = [...rounds, nextRound];
+                        setRounds(newRounds);
                     }
-                    setMatches([...matches]); 
                 } else {
                     setMatches(matches.slice(1));
                     setRounds([]);
@@ -76,7 +80,7 @@ export function ResultsSession() {
             socket.off('endMatch');
             socket.off('showNext');
         };
-    }, [isAdmin, matches]);
+    }, [isAdmin, matches, rounds]);
 
     return (
         <Card title="Results" style={{ margin: '20px' }}>
