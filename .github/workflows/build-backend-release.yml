@@ -10,7 +10,6 @@ on:
 jobs:
   build_and_push:
     name: Build and Push Docker image to Docker Hub
-    if: github.event_name == 'push' && contains(github.event.head_commit.modified, 'backend/')
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repository
