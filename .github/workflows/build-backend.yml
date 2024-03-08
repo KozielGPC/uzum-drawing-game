@@ -20,7 +20,7 @@ jobs:
 
     - name: Build backend image
       run: |
-        docker build -t kozielgpc/backend-udg:latest ./backend
+        docker build -t kozielgpc/backend-udg:latest ./frontend
 
     - name: Authenticate with Docker Hub
       run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u kozielgpc --password-stdin
