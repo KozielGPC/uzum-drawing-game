@@ -9,22 +9,30 @@ on:
         required: true
 
 jobs:
-  build_and_push:
+  push_to_registry:
+    name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Check out the repo
+        uses: actions/checkout@v4
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v1
+      - name: Log in to Docker Hub
+        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Build backend image
-      run: |
-        docker build -t kozielgpc/backend-udg:latest ./frontend
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: marciogpc/backend-udg
 
-    - name: Authenticate with Docker Hub
-      run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u kozielgpc --password-stdin
-
-    - name: Push image to Docker Hub
-      run: |
-        docker push kozielgpc/backend-udg:latest
+      - name: Build and push Docker image
+        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        with:
+          context: .
+          file: ./backend/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
