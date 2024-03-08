@@ -2,8 +2,6 @@ import { openNotificationWithIcon } from './showNotification';
 
 export const errorHandler = (error: any, notificationApi: any) => {
     const status = error?.response?.status;
-
-    console.log('teste');
     
     switch (status) {
         case 401:
