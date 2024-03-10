@@ -19,7 +19,7 @@ k8s_yaml(
       'infra/dev/backend-secret.yml',
       'infra/dev/frontend-secret.yml', 
       'infra/dev/backend-deployment.yml', 
-      # 'infra/dev/services.yml', 
+      'infra/dev/services.yml', 
       'infra/dev/frontend-deployment.yml'
     ]
 )
@@ -33,6 +33,6 @@ k8s_resource(
 
 k8s_resource(
   'frontend-deployment',
-  port_forwards=['3000:3000'],
+  port_forwards=['3000:80'],
   labels=["application"]
 )
