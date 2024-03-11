@@ -1,36 +1,38 @@
-FROM node:alpine AS development
+# Stage 1: Build the application
+FROM node:18 AS builder
 
-WORKDIR /usr/src/app
+# Set the working directory
+WORKDIR /app
 
+# Copy package.json and package-lock.json
 COPY package*.json ./
+
+# Install dependencies
+RUN yarn install
+
+# Copy the Prisma schema and generate the Prisma client
 COPY prisma ./prisma/
-
-RUN yarn
-
 RUN yarn prisma generate
 
-COPY . . 
-
-RUN yarn build
-
-FROM node:alpine as production
-
-ARG NODE_ENV=prod
-ENV NODE_ENV=${NODE_ENV}
-
-WORKDIR /usr/src/app
-
-COPY package*.json ./
-COPY prisma ./prisma/
-
-
-RUN yarn --only=prod
-
-RUN yarn prisma generate
-
+# Copy the rest of the application code
 COPY . .
 
-COPY --from=development /usr/src/app/dist ./dist
-COPY --from=development /usr/src/app/package.json .
+# Build the application
+RUN yarn build
 
-CMD ["node", "dist/main"]
+# Stage 2: Run the application
+FROM node:18-alpine
+
+# Set the working directory
+WORKDIR /app
+
+# Copy node_modules, package.json, and the build output from the builder stage
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/dist ./dist
+
+# Expose the port the application runs on
+EXPOSE 3000
+
+# Start the application
+CMD ["yarn", "start:prod"]
