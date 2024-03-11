@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: marciogpc/frontend-udg
+        image: marciogpc/frontend-udg:release
         imagePullPolicy: Always
         ports:
         - containerPort: 80
