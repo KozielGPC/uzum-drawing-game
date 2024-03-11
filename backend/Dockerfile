@@ -7,6 +7,9 @@ WORKDIR /app
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
+RUN apt-get update -y && apt-get install -y openssl
+RUN apt-get install -y build-essential libpq-dev
+
 # Install dependencies
 RUN yarn install
 
@@ -25,9 +28,6 @@ FROM node:18-alpine
 
 # Set the working directory
 WORKDIR /app
-
-RUN apt-get update -y && apt-get install -y openssl
-RUN apt-get install -y build-essential libpq-dev
 
 # Copy node_modules, package.json, prisma generated files and the build output from the builder stage
 COPY --from=builder /app/node_modules ./node_modules
