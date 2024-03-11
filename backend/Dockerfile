@@ -26,10 +26,11 @@ FROM node:18-alpine
 # Set the working directory
 WORKDIR /app
 
-# Copy node_modules, package.json, and the build output from the builder stage
+# Copy node_modules, package.json, prisma generated files and the build output from the builder stage
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/prisma/@generated ./prisma/@generated
 
 # Expose the port the application runs on
 EXPOSE 3000
