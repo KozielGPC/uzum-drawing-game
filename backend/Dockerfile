@@ -26,6 +26,8 @@ FROM node:18-alpine
 # Set the working directory
 WORKDIR /app
 
+RUN apt-get install -y build-essential libpq-dev
+
 # Copy node_modules, package.json, prisma generated files and the build output from the builder stage
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package*.json ./
