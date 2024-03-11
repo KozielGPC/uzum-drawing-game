@@ -1,9 +1,7 @@
 import './global.css';
 import Routes from './routes';
 
-function App() {
-    console.log('App');
-    
+function App() {    
     return (
         <div className="App">
             <Routes />
