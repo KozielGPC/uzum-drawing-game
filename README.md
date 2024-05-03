@@ -66,6 +66,20 @@ yarn install
 ```
 yarn start
 ```
+
+## Run with Tilt
+* There must be a kubernetes cluster running
+If you are using minikube:
+
+```
+minikube start
+```
+
+Then run in the root folder:
+```
+tilt up
+```
+
 ## To Do
 - Migrate to Ant Design
 - Update text inputs to use antd
